@@ -14,7 +14,7 @@ Single Python script that checks IMAP mailboxes for matching emails and sends nt
 
 - **Single file**: `check-payment-email.py` is the entire application
 - **Dockerfile**: `python:3.12-alpine`, no `pip install` needed
-- **docker-compose.yml**: `restart: "no"` is intentional — Coolify's scheduler starts the container on cron, it exits after completion. The `environment:` block defines all env vars with defaults so Coolify pre-fills them in the UI.
+- **docker-compose.yaml**: `restart: "no"` is intentional — Coolify's scheduler starts the container on cron, it exits after completion. The `environment:` block defines all env vars with defaults so Coolify pre-fills them in the UI.
 - **Local `.env` still works**: Docker Compose auto-loads `.env` and substitutes values via `${VAR:-default}` syntax.
 
 ## Conventions
