@@ -55,6 +55,7 @@ cp .env.example .env
 | `MESSAGE_ON_NOT_FOUND` | No | - | Custom summary when no emails found. Placeholders: `{lookback_hours}` |
 | `MESSAGE_EMAIL_DETAIL` | No | - | Custom per-email detail format. Placeholders: `{sender}`, `{subject}`, `{date}` |
 | `NOTIFY_EMAIL_DETAILS` | No | `true` | Send one notification per matching email |
+| `RUN_WEEK_PARITY` | No | - | `even` or `odd` to run bi-weekly; leave empty to run every scheduled execution |
 
 *At least one of `EMAIL_SENDER` or `EMAIL_SUBJECT` must be set.
 
@@ -84,6 +85,27 @@ docker compose up --build
    Adjust the cron expression for your timezone.
 
 7. Deploy
+
+### 6. Bi-Weekly Scheduling
+
+To run the check every other week instead of every week, set `RUN_WEEK_PARITY` to `even` or `odd`.
+
+The script uses ISO week numbers. To find the current ISO week number, visit [timeanddate.com](https://www.timeanddate.com/date/weeknumber.html).
+
+Then determine if your target Thursday falls in an even or odd week:
+
+- If your target Thursday is in an ISO week number that is **even** (e.g., 6, 8, 10), set `RUN_WEEK_PARITY=even`
+- If your target Thursday is in an ISO week number that is **odd** (e.g., 7, 9, 11), set `RUN_WEEK_PARITY=odd`
+
+Set your cron schedule to run every Thursday:
+
+```cron
+0 14 * * 4
+```
+
+The script will skip execution on Thursdays that don't match the configured parity.
+
+Leave `RUN_WEEK_PARITY` empty to run on every scheduled execution.
 
 ## How It Works
 

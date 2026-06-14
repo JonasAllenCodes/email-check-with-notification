@@ -27,7 +27,7 @@ Single Python script that checks IMAP mailboxes for matching emails and sends nt
 
 All config via env vars. See `.env.example` for full list. Required: `IMAP_HOST`, `IMAP_EMAIL`, `IMAP_PASSWORD`, `NTFY_URL`. At least one of `EMAIL_SENDER` or `EMAIL_SUBJECT` must be set.
 
-Custom notification messages supported via `MESSAGE_ON_FOUND`, `MESSAGE_ON_NOT_FOUND`, `MESSAGE_EMAIL_DETAIL` with placeholder substitution (`{count}`, `{lookback_hours}`, `{sender}`, `{subject}`, `{date}`). Per-email details toggle via `NOTIFY_EMAIL_DETAILS` (default `true`).
+Custom notification messages supported via `MESSAGE_ON_FOUND`, `MESSAGE_ON_NOT_FOUND`, `MESSAGE_EMAIL_DETAIL` with placeholder substitution (`{count}`, `{lookback_hours}`, `{sender}`, `{subject}`, `{date}`). Per-email details toggle via `NOTIFY_EMAIL_DETAILS` (default `true`). Bi-weekly scheduling toggle via `RUN_WEEK_PARITY` (`even` | `odd` | empty).
 
 ## Key Design Notes
 

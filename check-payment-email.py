@@ -131,6 +131,16 @@ def send_ntfy(url, title, message):
 
 def main():
     # Load configuration
+    run_week_parity = get_env("RUN_WEEK_PARITY", "").lower()
+
+    if run_week_parity in ("even", "odd"):
+        current_week = datetime.now().isocalendar().week
+        is_even = current_week % 2 == 0
+        should_run = (run_week_parity == "even" and is_even) or (run_week_parity == "odd" and not is_even)
+        if not should_run:
+            print(f"Skipping run: week {current_week} is not {run_week_parity}")
+            sys.exit(0)
+
     imap_host = get_env("IMAP_HOST", required=True)
     imap_port = int(get_env("IMAP_PORT", "993"))
     imap_email = get_env("IMAP_EMAIL", required=True)
