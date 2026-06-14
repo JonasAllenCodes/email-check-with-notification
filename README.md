@@ -51,6 +51,10 @@ cp .env.example .env
 | `NTFY_TITLE` | No | `Email Check` | Title for the notification |
 | `NOTIFY_ON_FOUND` | No | `true` | Send notification when emails are found |
 | `NOTIFY_ON_NOT_FOUND` | No | `true` | Send notification when no emails are found |
+| `MESSAGE_ON_FOUND` | No | - | Custom summary when emails found. Placeholders: `{count}`, `{lookback_hours}` |
+| `MESSAGE_ON_NOT_FOUND` | No | - | Custom summary when no emails found. Placeholders: `{lookback_hours}` |
+| `MESSAGE_EMAIL_DETAIL` | No | - | Custom per-email detail format. Placeholders: `{sender}`, `{subject}`, `{date}` |
+| `NOTIFY_EMAIL_DETAILS` | No | `true` | Send one notification per matching email |
 
 *At least one of `EMAIL_SENDER` or `EMAIL_SUBJECT` must be set.
 

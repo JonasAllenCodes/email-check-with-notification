@@ -26,6 +26,8 @@ Single Python script that checks IMAP mailboxes for matching emails and sends nt
 
 All config via env vars. See `.env.example` for full list. Required: `IMAP_HOST`, `IMAP_EMAIL`, `IMAP_PASSWORD`, `NTFY_URL`. At least one of `EMAIL_SENDER` or `EMAIL_SUBJECT` must be set.
 
+Custom notification messages supported via `MESSAGE_ON_FOUND`, `MESSAGE_ON_NOT_FOUND`, `MESSAGE_EMAIL_DETAIL` with placeholder substitution (`{count}`, `{lookback_hours}`, `{sender}`, `{subject}`, `{date}`). Per-email details toggle via `NOTIFY_EMAIL_DETAILS` (default `true`).
+
 ## Key Design Notes
 
 - IMAP `SINCE` is date-only, so the script fetches headers afterward and does precise time filtering in Python

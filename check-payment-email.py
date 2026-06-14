@@ -63,6 +63,14 @@ def decode_mime_header(header_value):
     return "".join(result)
 
 
+def format_message(template, **kwargs):
+    """Replace placeholders in message template with provided values."""
+    result = template
+    for key, value in kwargs.items():
+        result = result.replace(f"{{{key}}}", str(value))
+    return result
+
+
 def build_imap_search_query(sender, subject, match_rule):
     """
     Build an IMAP search query string.
@@ -138,6 +146,11 @@ def main():
     ntfy_title = get_env("NTFY_TITLE", "Email Check")
     notify_on_found = get_env("NOTIFY_ON_FOUND", "true").lower() == "true"
     notify_on_not_found = get_env("NOTIFY_ON_NOT_FOUND", "true").lower() == "true"
+    notify_email_details = get_env("NOTIFY_EMAIL_DETAILS", "true").lower() == "true"
+
+    message_on_found = get_env("MESSAGE_ON_FOUND", "")
+    message_on_not_found = get_env("MESSAGE_ON_NOT_FOUND", "")
+    message_email_detail = get_env("MESSAGE_EMAIL_DETAIL", "")
 
     # Connect to IMAP server
     print(f"Connecting to {imap_host}:{imap_port}...")
@@ -202,12 +215,32 @@ def main():
     # Send notification
     if recent_emails:
         count = len(recent_emails)
-        message = f"Found {count} matching email(s) in the last {lookback_hours} hours."
+        if message_on_found:
+            message = format_message(message_on_found, count=count, lookback_hours=lookback_hours)
+        else:
+            message = f"Found {count} matching email(s) in the last {lookback_hours} hours."
         print(f"RESULT: Email(s) found. {message}")
         if notify_on_found:
             send_ntfy(ntfy_url, ntfy_title, message)
+
+        if notify_email_details:
+            for em in recent_emails:
+                if message_email_detail:
+                    detail = format_message(
+                        message_email_detail,
+                        sender=em["from"],
+                        subject=em["subject"],
+                        date=em["date"],
+                    )
+                else:
+                    detail = f"From: {em['from']} | Subject: {em['subject']} | Date: {em['date']}"
+                print(f"DETAIL: {detail}")
+                send_ntfy(ntfy_url, ntfy_title, detail)
     else:
-        message = f"No matching emails found in the last {lookback_hours} hours."
+        if message_on_not_found:
+            message = format_message(message_on_not_found, lookback_hours=lookback_hours)
+        else:
+            message = f"No matching emails found in the last {lookback_hours} hours."
         print(f"RESULT: No emails found. {message}")
         if notify_on_not_found:
             send_ntfy(ntfy_url, ntfy_title, message)
