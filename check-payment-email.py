@@ -145,6 +145,9 @@ def main():
     except imaplib.IMAP4.error as e:
         print(f"IMAP login failed: {e}")
         sys.exit(1)
+    except OSError as e:
+        print(f"IMAP connection failed: {e}")
+        sys.exit(1)
 
     # Select mailbox folder
     status, _ = mail.select(email_folder, readonly=True)
