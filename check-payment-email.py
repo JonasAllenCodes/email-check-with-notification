@@ -215,13 +215,6 @@ def main():
     # Send notification
     if recent_emails:
         count = len(recent_emails)
-        if message_on_found:
-            message = format_message(message_on_found, count=count, lookback_hours=lookback_hours)
-        else:
-            message = f"Found {count} matching email(s) in the last {lookback_hours} hours."
-        print(f"RESULT: Email(s) found. {message}")
-        if notify_on_found:
-            send_ntfy(ntfy_url, ntfy_title, message)
 
         if notify_email_details:
             for em in recent_emails:
@@ -236,6 +229,14 @@ def main():
                     detail = f"From: {em['from']} | Subject: {em['subject']} | Date: {em['date']}"
                 print(f"DETAIL: {detail}")
                 send_ntfy(ntfy_url, ntfy_title, detail)
+
+        if message_on_found:
+            message = format_message(message_on_found, count=count, lookback_hours=lookback_hours)
+        else:
+            message = f"Found {count} matching email(s) in the last {lookback_hours} hours."
+        print(f"RESULT: Email(s) found. {message}")
+        if notify_on_found:
+            send_ntfy(ntfy_url, ntfy_title, message)
     else:
         if message_on_not_found:
             message = format_message(message_on_not_found, lookback_hours=lookback_hours)
