@@ -9,9 +9,12 @@ import email
 from email.header import decode_header
 import os
 import sys
+import socket
 from datetime import datetime, timedelta, timezone
 import http.client
 import urllib.parse
+
+socket.setdefaulttimeout(30)
 
 
 def get_env(name, default=None, required=False):
@@ -139,7 +142,7 @@ def main():
     # Connect to IMAP server
     print(f"Connecting to {imap_host}:{imap_port}...")
     try:
-        mail = imaplib.IMAP4_SSL(imap_host, imap_port)
+        mail = imaplib.IMAP4_SSL(imap_host, imap_port, timeout=30)
         mail.login(imap_email, imap_password)
         print("Login successful.")
     except imaplib.IMAP4.error as e:
@@ -147,6 +150,9 @@ def main():
         sys.exit(1)
     except OSError as e:
         print(f"IMAP connection failed: {e}")
+        sys.exit(1)
+    except TimeoutError as e:
+        print(f"IMAP connection timed out: {e}")
         sys.exit(1)
 
     # Select mailbox folder
@@ -201,7 +207,7 @@ def main():
         if notify_on_found:
             send_ntfy(ntfy_url, ntfy_title, message)
     else:
-        message = f"No matching emails found in the last {lookback_hours} hours. Check your payment status."
+        message = f"No matching emails found in the last {lookback_hours} hours."
         print(f"RESULT: No emails found. {message}")
         if notify_on_not_found:
             send_ntfy(ntfy_url, ntfy_title, message)
