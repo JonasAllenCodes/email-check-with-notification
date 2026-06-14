@@ -2,6 +2,22 @@ services:
   email-checker:
     build: .
     container_name: email-checker
-    env_file:
-      - .env
+    environment:
+      - IMAP_HOST=${IMAP_HOST:-imap.yourprovider.com}
+      - IMAP_PORT=${IMAP_PORT:-993}
+      - IMAP_EMAIL=${IMAP_EMAIL:-}
+      - IMAP_PASSWORD=${IMAP_PASSWORD:-}
+      - EMAIL_FOLDER=${EMAIL_FOLDER:-INBOX}
+      - EMAIL_SENDER=${EMAIL_SENDER:-}
+      - EMAIL_SUBJECT=${EMAIL_SUBJECT:-}
+      - EMAIL_MATCH_RULE=${EMAIL_MATCH_RULE:-and}
+      - SEARCH_LOOKBACK_HOURS=${SEARCH_LOOKBACK_HOURS:-24}
+      - NTFY_URL=${NTFY_URL:-}
+      - NTFY_TITLE=${NTFY_TITLE:-Email Check}
+      - NOTIFY_ON_FOUND=${NOTIFY_ON_FOUND:-true}
+      - NOTIFY_ON_NOT_FOUND=${NOTIFY_ON_NOT_FOUND:-true}
+      - MESSAGE_ON_FOUND=${MESSAGE_ON_FOUND:-}
+      - MESSAGE_ON_NOT_FOUND=${MESSAGE_ON_NOT_FOUND:-}
+      - MESSAGE_EMAIL_DETAIL=${MESSAGE_EMAIL_DETAIL:-}
+      - NOTIFY_EMAIL_DETAILS=${NOTIFY_EMAIL_DETAILS:-true}
     restart: "no"

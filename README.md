@@ -69,8 +69,9 @@ docker compose up --build
 1. Push this repository to your Git hosting (GitHub, GitLab, etc.)
 2. In Coolify, create a new resource → **Docker Compose**
 3. Connect your repository
-4. Go to the **Environment Variables** tab and add all variables from `.env.example`
-5. Go to the **Scheduler** tab and add a cron schedule:
+4. Go to the **Environment Variables** tab — variables from `docker-compose.yml` are pre-filled with their default values
+5. Fill in your actual `IMAP_EMAIL`, `IMAP_PASSWORD`, and `NTFY_URL`
+6. Go to the **Scheduler** tab and add a cron schedule:
 
    ```
    0 14 * * 4
@@ -82,7 +83,7 @@ docker compose up --build
 
    Adjust the cron expression for your timezone.
 
-6. Deploy
+7. Deploy
 
 ## How It Works
 
