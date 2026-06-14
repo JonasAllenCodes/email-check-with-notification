@@ -1,0 +1,7 @@
+services:
+  email-checker:
+    build: .
+    container_name: email-checker
+    env_file:
+      - .env
+    restart: "no"
